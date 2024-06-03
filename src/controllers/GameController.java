@@ -1,5 +1,7 @@
 package controllers;
 
+import exceptions.MoreThanOneBotException;
+import exceptions.PlayerCountMismatchException;
 import models.Game;
 import models.GameState;
 import models.Player;
@@ -12,12 +14,17 @@ public class GameController {
 
     public Game startGame(int dimensionsOfBoard,
                           List<Player> players,
-                          List<WinningStrategy> winningStrategies) {
-        return null;
+                          List<WinningStrategy> winningStrategies) throws PlayerCountMismatchException, MoreThanOneBotException {
+        return Game
+                .getBuilder()
+                .setPlayers(players)
+                .setDimension(dimensionsOfBoard)
+                .setWinningStrategies(winningStrategies)
+                .build();
     }
 
     public void makeMove(Game game) {
-
+        game.makeMove();
     }
 
     public GameState checkState(Game game) {

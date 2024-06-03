@@ -7,6 +7,15 @@ public class Player {
     private String name;
     private Long id;
     private PlayerType playerType;
+    private Scanner scanner;
+
+    public Player(Symbol symbol, String name, Long id, PlayerType playerType) {
+        this.symbol = symbol;
+        this.name = name;
+        this.id = id;
+        this.playerType = playerType;
+        this.scanner = new Scanner(System.in); // or use BufferedReader
+    }
 
     public Symbol getSymbol() {
         return symbol;
@@ -38,5 +47,15 @@ public class Player {
 
     public void setPlayerType(PlayerType playerType) {
         this.playerType = playerType;
+    }
+
+    public Move makeMove(Board board) {
+        System.out.println("Please enter the row on which you want to place your symbol (0 based index)");
+        int row = scanner.nextInt();
+
+        System.out.println("Please enter the col on which you want to place your symbol (0 based index)");
+        int col = scanner.nextInt();
+
+        return new Move(new Cell(row, col), this);
     }
 }

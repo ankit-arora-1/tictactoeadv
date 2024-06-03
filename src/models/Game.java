@@ -124,5 +124,12 @@ public class Game {
         return winningStrategies;
     }
 
-    // Break for 7 minutes: 8:34 -> 8:41
+    public void makeMove() {
+        Player currentMovePlayer = players.get(nextMovePlayerIndex);
+        System.out.println("It is " + currentMovePlayer.getName() + "'s move. Please make your move");
+
+        Move move = currentMovePlayer.makeMove(board);
+
+        // validatopn
+    }
 }
