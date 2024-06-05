@@ -188,6 +188,30 @@ public class Game {
             gameState = GameState.DRAW;
         }
 
-        // Break for 7 minutes: 8:20 -> 8:27
+    }
+
+    public void undo() {
+        if(moves.size() == 0) {
+            System.out.println("No moves to undo");
+            return;
+        }
+
+        Move lastMove = moves.get(moves.size() - 1);
+        moves.remove(lastMove);
+
+        Cell cell = lastMove.getCell();
+        cell.setCellState(CellState.EMPTY);
+        cell.setPlayer(null);
+
+        for(WinningStrategy winningStrategy: winningStrategies) {
+            winningStrategy.handleUndo(board, lastMove);
+        }
+
+        nextMovePlayerIndex -= 1;
+        nextMovePlayerIndex = (nextMovePlayerIndex + players.size()) % players.size();
+    }
+
+    public void printBoard() {
+        board.printBoard();
     }
 }

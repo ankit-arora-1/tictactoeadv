@@ -6,9 +6,18 @@ public class Cell {
     private CellState cellState;
     private Player player;
 
+    public void display() {
+        if(player == null) {
+            System.out.print("| - |");
+        } else {
+            System.out.print("| " + player.getSymbol().getaChar()  + " |");
+        }
+    }
+
     public Cell(int row, int col) {
         this.row = row;
         this.col = col;
+        this.cellState = CellState.EMPTY;
     }
 
     public int getRow() {
