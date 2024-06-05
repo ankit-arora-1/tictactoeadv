@@ -124,12 +124,70 @@ public class Game {
         return winningStrategies;
     }
 
+    // TODO: Think about moving this to another class
+    private boolean validate(Move move) {
+        int row = move.getCell().getRow();
+        int col = move.getCell().getCol();
+
+        if(row >= board.getSize()) {
+            return false;
+        }
+
+        if(col >= board.getSize()) {
+            return false;
+        }
+
+        if(board.getBoard().get(row).get(col).getCellState().equals(CellState.EMPTY)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean checkWinner(Board board, Move move) {
+        for(WinningStrategy winningStrategy: winningStrategies) {
+            if(winningStrategy.checkWinner(board, move)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void makeMove() {
         Player currentMovePlayer = players.get(nextMovePlayerIndex);
         System.out.println("It is " + currentMovePlayer.getName() + "'s move. Please make your move");
 
         Move move = currentMovePlayer.makeMove(board);
 
-        // validatopn
+        System.out.println(currentMovePlayer.getName() + " has made a move at row: " +
+                move.getCell().getRow() + " and at col: " + move.getCell().getRow());
+
+        if(!validate(move)) {
+            System.out.println("Invalid Move. Please try again");
+            return;
+        }
+
+        int row = move.getCell().getRow();
+        int col = move.getCell().getCol();
+
+        Cell cellToChange = board.getBoard().get(row).get(col);
+        cellToChange.setCellState(CellState.FILLED);
+        cellToChange.setPlayer(currentMovePlayer);
+
+        Move finalMove = new Move(cellToChange, currentMovePlayer);
+        moves.add(finalMove);
+
+        nextMovePlayerIndex += 1;
+        nextMovePlayerIndex %= players.size();
+
+        if(checkWinner(board, finalMove)) {
+            winner = currentMovePlayer;
+            gameState = GameState.WIN;
+        } else if(moves.size() == board.getSize() * board.getSize()) {
+            gameState = GameState.DRAW;
+        }
+
+        // Break for 7 minutes: 8:20 -> 8:27
     }
 }
